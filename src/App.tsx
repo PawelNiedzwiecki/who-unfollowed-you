@@ -1,5 +1,6 @@
 import { AnimatePresence, type Variants, motion } from "motion/react";
 import { useCallback, useRef } from "react";
+import Footer from "./components/Footer";
 import ResultsPage from "./components/ResultsPage";
 import Toast from "./components/Toast";
 import UploadPage from "./components/UploadPage";
@@ -103,6 +104,7 @@ export default function App() {
               onFollowingFile={handleFollowingFile}
               onAnalyse={handleAnalyse}
             />
+            <Footer />
           </motion.div>
         ) : (
           <motion.div
@@ -131,6 +133,7 @@ export default function App() {
               onCopyAll={copyAll}
               onExportTxt={exportTxt}
             />
+            <Footer />
           </motion.div>
         )}
       </AnimatePresence>
