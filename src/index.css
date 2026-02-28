@@ -12,6 +12,51 @@
   --color-accent: #a78bfa;
   --color-accent-hover: #c4b5fd;
   --color-success: #4ade80;
+  --color-error: #f87171;
+}
+
+/* Dark mode (default) */
+:root,
+html.dark {
+  --color-bg: #09090b;
+  --color-surface: #18181b;
+  --color-surface-hover: #27272a;
+  --color-border: #3f3f46;
+  --color-text: #fafafa;
+  --color-text-muted: #a1a1aa;
+  --color-accent: #a78bfa;
+  --color-accent-hover: #c4b5fd;
+  --color-success: #4ade80;
+  --color-error: #f87171;
+}
+
+/* Light mode */
+html.light {
+  --color-bg: #ffffff;
+  --color-surface: #f4f4f5;
+  --color-surface-hover: #e4e4e7;
+  --color-border: #d4d4d8;
+  --color-text: #09090b;
+  --color-text-muted: #71717a;
+  --color-accent: #7c3aed;
+  --color-accent-hover: #6d28d9;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not(.dark):not(.light) {
+    --color-bg: #ffffff;
+    --color-surface: #f4f4f5;
+    --color-surface-hover: #e4e4e7;
+    --color-border: #d4d4d8;
+    --color-text: #09090b;
+    --color-text-muted: #71717a;
+    --color-accent: #7c3aed;
+    --color-accent-hover: #6d28d9;
+    --color-success: #16a34a;
+    --color-error: #dc2626;
+  }
 }
 
 body {
@@ -21,23 +66,4 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.4s ease-out both;
-}
-
-.animate-fade-in-delay {
-  animation: fade-in 0.4s ease-out 0.15s both;
 }

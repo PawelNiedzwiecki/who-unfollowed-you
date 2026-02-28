@@ -1,9 +1,16 @@
+import {
+  CheckCircleIcon,
+  CloudArrowUpIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react";
+import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useRef, useState } from "react";
 
 interface UploadZoneProps {
   label: string;
   hint: string;
   file: File | null;
+  error?: boolean;
   onFile: (file: File) => void;
 }
 
@@ -11,6 +18,7 @@ export default function UploadZone({
   label,
   hint,
   file,
+  error = false,
   onFile,
 }: UploadZoneProps) {
   const [dragging, setDragging] = useState(false);
@@ -34,10 +42,10 @@ export default function UploadZone({
     [onFile],
   );
 
-  const loaded = file !== null;
+  const loaded = file !== null && !error;
 
   return (
-    <button
+    <motion.button
       type="button"
       onDragOver={(e) => {
         e.preventDefault();
@@ -46,62 +54,96 @@ export default function UploadZone({
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
+      animate={{
+        scale: dragging ? 1.03 : 1,
+      }}
+      transition={{ type: "spring", stiffness: 350, damping: 22 }}
       className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-8 transition-colors ${
         loaded
           ? "border-success bg-success/10"
-          : dragging
-            ? "border-accent bg-accent/10"
-            : "border-border hover:border-accent/50"
+          : error
+            ? "border-error bg-error/10"
+            : dragging
+              ? "border-accent bg-accent/10"
+              : "border-border hover:border-accent/50"
       }`}
     >
       <input
         ref={inputRef}
         type="file"
-        accept=".html"
+        accept=".html,.json"
         onChange={handleChange}
         className="hidden"
       />
 
-      {loaded ? (
-        <>
-          <svg
-            className="h-10 w-10 text-success"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+      <AnimatePresence mode="wait">
+        {loaded ? (
+          <motion.div
+            key="loaded"
+            className="flex flex-col items-center gap-3"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
+            <CheckCircleIcon
+              className="h-10 w-10 text-success"
+              weight="regular"
+              aria-hidden="true"
             />
-          </svg>
-          <span className="font-mono text-sm text-success">{file.name}</span>
-        </>
-      ) : (
-        <>
-          <svg
-            className="h-10 w-10 text-text-muted"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
+            <span className="font-mono text-sm text-success">{file.name}</span>
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            key="error"
+            className="flex flex-col items-center gap-3"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.15 }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            <WarningCircleIcon
+              className="h-10 w-10 text-error"
+              weight="regular"
+              aria-hidden="true"
             />
-          </svg>
-          <div className="text-center">
-            <p className="text-sm font-medium text-text">{label}</p>
-            <p className="mt-1 text-xs text-text-muted">{hint}</p>
-          </div>
-        </>
-      )}
-    </button>
+            <div className="text-center">
+              <p className="text-sm font-medium text-error">Wrong file</p>
+              <p className="mt-1 text-xs text-text-muted">
+                No Instagram data found — click to try again
+              </p>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="empty"
+            className="flex flex-col items-center gap-3"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.15 }}
+          >
+            <motion.span
+              animate={{
+                color: dragging
+                  ? "var(--color-accent)"
+                  : "var(--color-text-muted)",
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              <CloudArrowUpIcon
+                className="h-10 w-10"
+                weight="regular"
+                aria-hidden="true"
+              />
+            </motion.span>
+            <div className="text-center">
+              <p className="text-sm font-medium text-text">{label}</p>
+              <p className="mt-1 text-xs text-text-muted">{hint}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
 }

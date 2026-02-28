@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+
+yarn biome check --write --no-errors-on-unmatched src/
+git add -u
+
+yarn tsc --noEmit
+yarn test --run
