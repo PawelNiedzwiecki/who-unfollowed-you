@@ -48,7 +48,9 @@ describe("useFileUpload — duplicate detection", () => {
       result.current.handleFollowersFile(makeFile("followers_1.json", "[]")),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", "[]", 2000)),
+      result.current.handleFollowingFile(
+        makeFile("following.json", "[]", 2000),
+      ),
     );
 
     expect(result.current.duplicateError).toBe(false);
@@ -62,7 +64,9 @@ describe("useFileUpload — invalid file detection", () => {
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "not instagram data")),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", "not instagram data"),
+      ),
     );
 
     expect(result.current.followersError).toBe(true);
@@ -74,7 +78,9 @@ describe("useFileUpload — invalid file detection", () => {
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", "not instagram data")),
+      result.current.handleFollowingFile(
+        makeFile("following.json", "not instagram data"),
+      ),
     );
 
     expect(result.current.followingError).toBe(true);
@@ -86,13 +92,19 @@ describe("useFileUpload — invalid file detection", () => {
 
     stubFileReader("not instagram data");
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "bad", 1000)),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", "bad", 1000),
+      ),
     );
     expect(result.current.followersError).toBe(true);
 
-    stubFileReader(JSON.stringify([{ string_list_data: [{ value: "alice" }] }]));
+    stubFileReader(
+      JSON.stringify([{ string_list_data: [{ value: "alice" }] }]),
+    );
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "good", 2000)),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", "good", 2000),
+      ),
     );
     expect(result.current.followersError).toBe(false);
   });
@@ -102,10 +114,14 @@ describe("useFileUpload — invalid file detection", () => {
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "bad", 1000)),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", "bad", 1000),
+      ),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", "bad", 2000)),
+      result.current.handleFollowingFile(
+        makeFile("following.json", "bad", 2000),
+      ),
     );
 
     expect(result.current.canAnalyse).toBe(false);
@@ -134,10 +150,14 @@ describe("useFileUpload — analyse & reset", () => {
     expect(result.current.canAnalyse).toBe(false);
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", validJson)),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", validJson),
+      ),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", validJson, 2000)),
+      result.current.handleFollowingFile(
+        makeFile("following.json", validJson, 2000),
+      ),
     );
 
     expect(result.current.canAnalyse).toBe(true);
@@ -148,10 +168,14 @@ describe("useFileUpload — analyse & reset", () => {
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", validJson)),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", validJson),
+      ),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", validJson, 2000)),
+      result.current.handleFollowingFile(
+        makeFile("following.json", validJson, 2000),
+      ),
     );
     act(() => result.current.handleAnalyse());
 
@@ -164,10 +188,14 @@ describe("useFileUpload — analyse & reset", () => {
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", validJson)),
+      result.current.handleFollowersFile(
+        makeFile("followers_1.json", validJson),
+      ),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", validJson, 2000)),
+      result.current.handleFollowingFile(
+        makeFile("following.json", validJson, 2000),
+      ),
     );
     act(() => result.current.handleAnalyse());
     act(() => result.current.handleReset());

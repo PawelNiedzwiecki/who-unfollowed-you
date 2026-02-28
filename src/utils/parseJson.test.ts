@@ -3,7 +3,9 @@ import { parseJson } from "./parseJson";
 
 const makeEntry = (value: string) => ({
   title: "",
-  string_list_data: [{ href: `https://www.instagram.com/${value}/`, value, timestamp: 0 }],
+  string_list_data: [
+    { href: `https://www.instagram.com/${value}/`, value, timestamp: 0 },
+  ],
 });
 
 describe("parseJson", () => {

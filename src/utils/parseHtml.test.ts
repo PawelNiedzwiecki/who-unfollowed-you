@@ -23,7 +23,9 @@ describe("parseHtml", () => {
   });
 
   it("returns an empty array when there are no matching anchors", () => {
-    expect(parseHtml("<html><body><p>nothing here</p></body></html>")).toEqual([]);
+    expect(parseHtml("<html><body><p>nothing here</p></body></html>")).toEqual(
+      [],
+    );
   });
 
   it("returns an empty array for an empty string", () => {

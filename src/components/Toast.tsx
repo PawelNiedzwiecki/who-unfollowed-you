@@ -17,7 +17,11 @@ export default function Toast({ message }: ToastProps) {
           exit={{ opacity: 0, y: 10, x: "-50%", scale: 0.95 }}
           transition={{ type: "spring", stiffness: 380, damping: 26 }}
         >
-          <WarningIcon className="h-4 w-4 shrink-0 text-amber-400" weight="fill" aria-hidden="true" />
+          <WarningIcon
+            className="h-4 w-4 shrink-0 text-amber-400"
+            weight="fill"
+            aria-hidden="true"
+          />
           {message}
         </motion.div>
       )}

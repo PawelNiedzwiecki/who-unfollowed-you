@@ -60,7 +60,11 @@ export default function ResultsPage({
   const statCards = [
     { label: "Followers", value: followers?.length ?? 0 },
     { label: "Following", value: following?.length ?? 0 },
-    { label: "Don't follow back", value: notFollowingBack.length, accent: true },
+    {
+      label: "Don't follow back",
+      value: notFollowingBack.length,
+      accent: true,
+    },
     { label: "You don't follow", value: youDontFollow.length, accent: true },
   ];
 
@@ -78,7 +82,9 @@ export default function ResultsPage({
         animate="animate"
         className="mb-6 flex items-center justify-between"
       >
-        <h1 className="text-xl font-bold tracking-tight text-text">Unfollowers</h1>
+        <h1 className="text-xl font-bold tracking-tight text-text">
+          Unfollowers
+        </h1>
         <div className="flex items-center gap-2">
           <ThemeToggle theme={theme} onToggle={onThemeToggle} />
           <motion.button
@@ -101,7 +107,11 @@ export default function ResultsPage({
       >
         {statCards.map((card) => (
           <motion.div key={card.label} variants={fadeUp}>
-            <StatCard label={card.label} value={card.value} accent={card.accent} />
+            <StatCard
+              label={card.label}
+              value={card.value}
+              accent={card.accent}
+            />
           </motion.div>
         ))}
       </motion.div>
@@ -119,7 +129,9 @@ export default function ResultsPage({
             type="button"
             onClick={() => onSwitchTab(t)}
             className={`cursor-pointer rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              tab === t ? "bg-accent text-bg" : "bg-surface text-text-muted hover:text-text"
+              tab === t
+                ? "bg-accent text-bg"
+                : "bg-surface text-text-muted hover:text-text"
             }`}
             whileTap={{ scale: 0.95 }}
           >

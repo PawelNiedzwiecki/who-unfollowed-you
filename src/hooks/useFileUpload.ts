@@ -4,7 +4,9 @@ import { parseJson } from "../utils/parseJson";
 import { clearData, loadData, saveData } from "../utils/storage";
 
 function isSameFile(a: File, b: File) {
-  return a.name === b.name && a.size === b.size && a.lastModified === b.lastModified;
+  return (
+    a.name === b.name && a.size === b.size && a.lastModified === b.lastModified
+  );
 }
 
 function readFileAsUsernames(file: File): Promise<string[]> {

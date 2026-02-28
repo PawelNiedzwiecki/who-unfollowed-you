@@ -36,7 +36,8 @@ export function useResults(
     return followers.filter((u) => !followingSet.has(u));
   }, [followers, following]);
 
-  const activeList = tab === "not_following_back" ? notFollowingBack : youDontFollow;
+  const activeList =
+    tab === "not_following_back" ? notFollowingBack : youDontFollow;
 
   const filtered = useMemo(() => {
     if (!search.trim()) return activeList;
@@ -59,7 +60,10 @@ export function useResults(
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = tab === "not_following_back" ? "not_following_back.txt" : "you_dont_follow.txt";
+    a.download =
+      tab === "not_following_back"
+        ? "not_following_back.txt"
+        : "you_dont_follow.txt";
     a.click();
     URL.revokeObjectURL(url);
   }, [activeList, tab]);

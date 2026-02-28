@@ -1,4 +1,8 @@
-import { CheckCircleIcon, CloudArrowUpIcon, WarningCircleIcon } from "@phosphor-icons/react";
+import {
+  CheckCircleIcon,
+  CloudArrowUpIcon,
+  WarningCircleIcon,
+} from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useRef, useState } from "react";
 
@@ -82,7 +86,11 @@ export default function UploadZone({
             exit={{ opacity: 0, scale: 0.6 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
-            <CheckCircleIcon className="h-10 w-10 text-success" weight="regular" aria-hidden="true" />
+            <CheckCircleIcon
+              className="h-10 w-10 text-success"
+              weight="regular"
+              aria-hidden="true"
+            />
             <span className="font-mono text-sm text-success">{file.name}</span>
           </motion.div>
         ) : error ? (
@@ -94,10 +102,16 @@ export default function UploadZone({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <WarningCircleIcon className="h-10 w-10 text-error" weight="regular" aria-hidden="true" />
+            <WarningCircleIcon
+              className="h-10 w-10 text-error"
+              weight="regular"
+              aria-hidden="true"
+            />
             <div className="text-center">
               <p className="text-sm font-medium text-error">Wrong file</p>
-              <p className="mt-1 text-xs text-text-muted">No Instagram data found — click to try again</p>
+              <p className="mt-1 text-xs text-text-muted">
+                No Instagram data found — click to try again
+              </p>
             </div>
           </motion.div>
         ) : (
@@ -109,8 +123,19 @@ export default function UploadZone({
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.15 }}
           >
-            <motion.span animate={{ color: dragging ? "var(--color-accent)" : "var(--color-text-muted)" }} transition={{ duration: 0.2 }}>
-              <CloudArrowUpIcon className="h-10 w-10" weight="regular" aria-hidden="true" />
+            <motion.span
+              animate={{
+                color: dragging
+                  ? "var(--color-accent)"
+                  : "var(--color-text-muted)",
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              <CloudArrowUpIcon
+                className="h-10 w-10"
+                weight="regular"
+                aria-hidden="true"
+              />
             </motion.span>
             <div className="text-center">
               <p className="text-sm font-medium text-text">{label}</p>
