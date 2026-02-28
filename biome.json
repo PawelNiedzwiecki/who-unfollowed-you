@@ -6,8 +6,18 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignore": ["dist", "node_modules"]
+    "ignore": ["dist", "node_modules", ".claude"]
   },
+  "overrides": [
+    {
+      "include": ["tsconfig*.json"],
+      "json": {
+        "parser": {
+          "allowComments": true
+        }
+      }
+    }
+  ],
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
