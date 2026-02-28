@@ -1,15 +1,15 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, type Variants, motion } from "motion/react";
 import SearchBar from "./SearchBar";
 import StatCard from "./StatCard";
 import ThemeToggle from "./ThemeToggle";
 import UserRow from "./UserRow";
 
-const fadeUp = {
+const fadeUp: Variants = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   animate: { transition: { staggerChildren: 0.07 } },
 };
 

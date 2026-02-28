@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, type Variants, motion } from "motion/react";
 import { useCallback, useRef } from "react";
 import ResultsPage from "./components/ResultsPage";
 import Toast from "./components/Toast";
@@ -7,7 +7,7 @@ import { useFileUpload } from "./hooks/useFileUpload";
 import { useResults } from "./hooks/useResults";
 import { useTheme } from "./hooks/useTheme";
 
-const pageVariants = {
+const pageVariants: Variants = {
   initial: { opacity: 0, y: 12 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
   exit: { opacity: 0, y: -8, transition: { duration: 0.2, ease: "easeIn" } },
@@ -23,6 +23,8 @@ export default function App() {
     followingFile,
     analysed,
     duplicateError,
+    followersError,
+    followingError,
     canAnalyse,
     handleFollowersFile,
     handleFollowingFile,
@@ -89,6 +91,8 @@ export default function App() {
               theme={theme}
               followersFile={followersFile}
               followingFile={followingFile}
+              followersError={followersError}
+              followingError={followingError}
               canAnalyse={canAnalyse}
               onThemeToggle={handleThemeToggle}
               onFollowersFile={handleFollowersFile}

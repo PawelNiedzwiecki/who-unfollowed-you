@@ -11,6 +11,9 @@ function makeFile(name: string, content: string, lastModified = 1000): File {
   return new File([content], name, { type: "text/html", lastModified });
 }
 
+// Minimal valid Instagram JSON content that parses to at least one username
+const validJson = JSON.stringify([{ string_list_data: [{ value: "alice" }] }]);
+
 // Stub FileReader globally so readAsText immediately resolves with the given text.
 function stubFileReader(text: string) {
   class MockFileReader extends EventTarget {
@@ -53,32 +56,102 @@ describe("useFileUpload — duplicate detection", () => {
   });
 });
 
+describe("useFileUpload — invalid file detection", () => {
+  it("sets followersError when followers file yields no usernames", async () => {
+    stubFileReader("not instagram data");
+    const { result } = renderHook(() => useFileUpload());
+
+    await act(async () =>
+      result.current.handleFollowersFile(makeFile("followers_1.json", "not instagram data")),
+    );
+
+    expect(result.current.followersError).toBe(true);
+    expect(result.current.canAnalyse).toBe(false);
+  });
+
+  it("sets followingError when following file yields no usernames", async () => {
+    stubFileReader("not instagram data");
+    const { result } = renderHook(() => useFileUpload());
+
+    await act(async () =>
+      result.current.handleFollowingFile(makeFile("following.json", "not instagram data")),
+    );
+
+    expect(result.current.followingError).toBe(true);
+    expect(result.current.canAnalyse).toBe(false);
+  });
+
+  it("clears followersError when a valid file is uploaded afterwards", async () => {
+    const { result } = renderHook(() => useFileUpload());
+
+    stubFileReader("not instagram data");
+    await act(async () =>
+      result.current.handleFollowersFile(makeFile("followers_1.json", "bad", 1000)),
+    );
+    expect(result.current.followersError).toBe(true);
+
+    stubFileReader(JSON.stringify([{ string_list_data: [{ value: "alice" }] }]));
+    await act(async () =>
+      result.current.handleFollowersFile(makeFile("followers_1.json", "good", 2000)),
+    );
+    expect(result.current.followersError).toBe(false);
+  });
+
+  it("canAnalyse is false when both files are uploaded but both are invalid", async () => {
+    stubFileReader("bad data");
+    const { result } = renderHook(() => useFileUpload());
+
+    await act(async () =>
+      result.current.handleFollowersFile(makeFile("followers_1.json", "bad", 1000)),
+    );
+    await act(async () =>
+      result.current.handleFollowingFile(makeFile("following.json", "bad", 2000)),
+    );
+
+    expect(result.current.canAnalyse).toBe(false);
+  });
+
+  it("handleReset clears error flags", async () => {
+    stubFileReader("bad data");
+    const { result } = renderHook(() => useFileUpload());
+
+    await act(async () =>
+      result.current.handleFollowersFile(makeFile("followers_1.json", "bad")),
+    );
+    expect(result.current.followersError).toBe(true);
+
+    act(() => result.current.handleReset());
+    expect(result.current.followersError).toBe(false);
+    expect(result.current.followingError).toBe(false);
+  });
+});
+
 describe("useFileUpload — analyse & reset", () => {
   it("canAnalyse becomes true once both files are loaded", async () => {
-    stubFileReader("[]");
+    stubFileReader(validJson);
     const { result } = renderHook(() => useFileUpload());
 
     expect(result.current.canAnalyse).toBe(false);
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "[]")),
+      result.current.handleFollowersFile(makeFile("followers_1.json", validJson)),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", "[]", 2000)),
+      result.current.handleFollowingFile(makeFile("following.json", validJson, 2000)),
     );
 
     expect(result.current.canAnalyse).toBe(true);
   });
 
   it("handleAnalyse sets analysed to true and persists to localStorage", async () => {
-    stubFileReader("[]");
+    stubFileReader(validJson);
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "[]")),
+      result.current.handleFollowersFile(makeFile("followers_1.json", validJson)),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", "[]", 2000)),
+      result.current.handleFollowingFile(makeFile("following.json", validJson, 2000)),
     );
     act(() => result.current.handleAnalyse());
 
@@ -87,14 +160,14 @@ describe("useFileUpload — analyse & reset", () => {
   });
 
   it("handleReset clears all state and localStorage", async () => {
-    stubFileReader("[]");
+    stubFileReader(validJson);
     const { result } = renderHook(() => useFileUpload());
 
     await act(async () =>
-      result.current.handleFollowersFile(makeFile("followers_1.json", "[]")),
+      result.current.handleFollowersFile(makeFile("followers_1.json", validJson)),
     );
     await act(async () =>
-      result.current.handleFollowingFile(makeFile("following.json", "[]", 2000)),
+      result.current.handleFollowingFile(makeFile("following.json", validJson, 2000)),
     );
     act(() => result.current.handleAnalyse());
     act(() => result.current.handleReset());

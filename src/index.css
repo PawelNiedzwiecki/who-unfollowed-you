@@ -12,6 +12,7 @@
   --color-accent: #a78bfa;
   --color-accent-hover: #c4b5fd;
   --color-success: #4ade80;
+  --color-error: #f87171;
 }
 
 /* Dark mode (default) */
@@ -26,6 +27,7 @@ html.dark {
   --color-accent: #a78bfa;
   --color-accent-hover: #c4b5fd;
   --color-success: #4ade80;
+  --color-error: #f87171;
 }
 
 /* Light mode */
@@ -39,6 +41,7 @@ html.light {
   --color-accent: #7c3aed;
   --color-accent-hover: #6d28d9;
   --color-success: #16a34a;
+  --color-error: #dc2626;
 }
 
 @media (prefers-color-scheme: light) {
@@ -52,6 +55,7 @@ html.light {
     --color-accent: #7c3aed;
     --color-accent-hover: #6d28d9;
     --color-success: #16a34a;
+    --color-error: #dc2626;
   }
 }
 

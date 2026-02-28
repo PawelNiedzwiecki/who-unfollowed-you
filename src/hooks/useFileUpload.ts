@@ -25,6 +25,8 @@ interface UseFileUploadReturn {
   followingFile: File | null;
   analysed: boolean;
   duplicateError: boolean;
+  followersError: boolean;
+  followingError: boolean;
   canAnalyse: boolean;
   handleFollowersFile: (file: File) => void;
   handleFollowingFile: (file: File) => void;
@@ -39,6 +41,8 @@ export function useFileUpload(): UseFileUploadReturn {
   const [followingFile, setFollowingFile] = useState<File | null>(null);
   const [analysed, setAnalysed] = useState(false);
   const [duplicateError, setDuplicateError] = useState(false);
+  const [followersError, setFollowersError] = useState(false);
+  const [followingError, setFollowingError] = useState(false);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -69,7 +73,10 @@ export function useFileUpload(): UseFileUploadReturn {
         return;
       }
       setFollowersFile(file);
-      readFileAsUsernames(file).then(setFollowers);
+      readFileAsUsernames(file).then((usernames) => {
+        setFollowers(usernames);
+        setFollowersError(usernames.length === 0);
+      });
     },
     [followingFile, showDuplicateError],
   );
@@ -81,7 +88,10 @@ export function useFileUpload(): UseFileUploadReturn {
         return;
       }
       setFollowingFile(file);
-      readFileAsUsernames(file).then(setFollowing);
+      readFileAsUsernames(file).then((usernames) => {
+        setFollowing(usernames);
+        setFollowingError(usernames.length === 0);
+      });
     },
     [followersFile, showDuplicateError],
   );
@@ -101,9 +111,16 @@ export function useFileUpload(): UseFileUploadReturn {
     setFollowingFile(null);
     setAnalysed(false);
     setDuplicateError(false);
+    setFollowersError(false);
+    setFollowingError(false);
   }, []);
 
-  const canAnalyse = followers !== null && following !== null && !analysed;
+  const canAnalyse =
+    followers !== null &&
+    followers.length > 0 &&
+    following !== null &&
+    following.length > 0 &&
+    !analysed;
 
   return {
     followers,
@@ -112,6 +129,8 @@ export function useFileUpload(): UseFileUploadReturn {
     followingFile,
     analysed,
     duplicateError,
+    followersError,
+    followingError,
     canAnalyse,
     handleFollowersFile,
     handleFollowingFile,

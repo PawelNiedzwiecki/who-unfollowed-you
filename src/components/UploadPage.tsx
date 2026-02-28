@@ -1,13 +1,13 @@
 import { InstagramLogoIcon } from "@phosphor-icons/react";
-import { motion } from "motion/react";
+import { type Variants, motion } from "motion/react";
 import ThemeToggle from "./ThemeToggle";
 import UploadZone from "./UploadZone";
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   animate: { transition: { staggerChildren: 0.07 } },
 };
 
-const fadeUp = {
+const fadeUp: Variants = {
   initial: { opacity: 0, y: 10 },
   animate: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
 };
@@ -16,6 +16,8 @@ interface UploadPageProps {
   theme: "light" | "dark";
   followersFile: File | null;
   followingFile: File | null;
+  followersError: boolean;
+  followingError: boolean;
   canAnalyse: boolean;
   onThemeToggle: () => void;
   onFollowersFile: (file: File) => void;
@@ -27,6 +29,8 @@ export default function UploadPage({
   theme,
   followersFile,
   followingFile,
+  followersError,
+  followingError,
   canAnalyse,
   onThemeToggle,
   onFollowersFile,
@@ -68,12 +72,14 @@ export default function UploadPage({
           label="followers_1.html / followers_1.json"
           hint="Your followers list"
           file={followersFile}
+          error={followersError}
           onFile={onFollowersFile}
         />
         <UploadZone
           label="following.html / following.json"
           hint="Accounts you follow"
           file={followingFile}
+          error={followingError}
           onFile={onFollowingFile}
         />
       </motion.div>

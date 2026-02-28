@@ -1,4 +1,4 @@
-import { CheckCircleIcon, CloudArrowUpIcon } from "@phosphor-icons/react";
+import { CheckCircleIcon, CloudArrowUpIcon, WarningCircleIcon } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useRef, useState } from "react";
 
@@ -6,6 +6,7 @@ interface UploadZoneProps {
   label: string;
   hint: string;
   file: File | null;
+  error?: boolean;
   onFile: (file: File) => void;
 }
 
@@ -13,6 +14,7 @@ export default function UploadZone({
   label,
   hint,
   file,
+  error = false,
   onFile,
 }: UploadZoneProps) {
   const [dragging, setDragging] = useState(false);
@@ -36,7 +38,7 @@ export default function UploadZone({
     [onFile],
   );
 
-  const loaded = file !== null;
+  const loaded = file !== null && !error;
 
   return (
     <motion.button
@@ -55,9 +57,11 @@ export default function UploadZone({
       className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-8 transition-colors ${
         loaded
           ? "border-success bg-success/10"
-          : dragging
-            ? "border-accent bg-accent/10"
-            : "border-border hover:border-accent/50"
+          : error
+            ? "border-error bg-error/10"
+            : dragging
+              ? "border-accent bg-accent/10"
+              : "border-border hover:border-accent/50"
       }`}
     >
       <input
@@ -80,6 +84,21 @@ export default function UploadZone({
           >
             <CheckCircleIcon className="h-10 w-10 text-success" weight="regular" aria-hidden="true" />
             <span className="font-mono text-sm text-success">{file.name}</span>
+          </motion.div>
+        ) : error ? (
+          <motion.div
+            key="error"
+            className="flex flex-col items-center gap-3"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.15 }}
+          >
+            <WarningCircleIcon className="h-10 w-10 text-error" weight="regular" aria-hidden="true" />
+            <div className="text-center">
+              <p className="text-sm font-medium text-error">Wrong file</p>
+              <p className="mt-1 text-xs text-text-muted">No Instagram data found — click to try again</p>
+            </div>
           </motion.div>
         ) : (
           <motion.div
