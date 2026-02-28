@@ -605,8 +605,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-<<<<<<< Updated upstream
-=======
 "@phosphor-icons/react@npm:^2.1.10":
   version: 2.1.10
   resolution: "@phosphor-icons/react@npm:2.1.10"
@@ -617,34 +615,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@poppinss/colors@npm:^4.1.5":
-  version: 4.1.6
-  resolution: "@poppinss/colors@npm:4.1.6"
-  dependencies:
-    kleur: "npm:^4.1.5"
-  checksum: 10c0/5c2cec5393e33294465873002f4c570adf36b5405b9f06551485162a6fb422d01de90ac20cb00800be6ab2f0d93da26e67302e95691dff2e0aa339cf93e5bf7f
-  languageName: node
-  linkType: hard
-
-"@poppinss/dumper@npm:^0.6.4":
-  version: 0.6.5
-  resolution: "@poppinss/dumper@npm:0.6.5"
-  dependencies:
-    "@poppinss/colors": "npm:^4.1.5"
-    "@sindresorhus/is": "npm:^7.0.2"
-    supports-color: "npm:^10.0.0"
-  checksum: 10c0/7a0916fe4ce543cac1e61f09218e5c88b903ad0d853301b790686c772b7f5c595a04beccbf13172e0c77dc64b132b27ad438b888816fd7f6128c816290f9dc1f
-  languageName: node
-  linkType: hard
-
-"@poppinss/exception@npm:^1.2.2":
-  version: 1.2.3
-  resolution: "@poppinss/exception@npm:1.2.3"
-  checksum: 10c0/44e48400c9f2d33a4904bee99321b89239774bb9210049f1c55864725fd524ff55bc78a5a94a13d5edea93b84e13023c229c88ebba8c2dc717fb4b2205e42ac7
-  languageName: node
-  linkType: hard
-
->>>>>>> Stashed changes
 "@rolldown/pluginutils@npm:1.0.0-rc.3":
   version: 1.0.0-rc.3
   resolution: "@rolldown/pluginutils@npm:1.0.0-rc.3"
@@ -2225,11 +2195,7 @@ __metadata:
   resolution: "who-unfollowed-you@workspace:."
   dependencies:
     "@biomejs/biome": "npm:^1.9.4"
-<<<<<<< Updated upstream
-=======
-    "@cloudflare/vite-plugin": "npm:^1.25.6"
     "@phosphor-icons/react": "npm:^2.1.10"
->>>>>>> Stashed changes
     "@tailwindcss/vite": "npm:^4.2.1"
     "@types/node": "npm:^25.3.2"
     "@types/react": "npm:^19.2.7"
