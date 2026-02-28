@@ -7,7 +7,12 @@ interface UploadZoneProps {
   onFile: (file: File) => void;
 }
 
-export default function UploadZone({ label, hint, file, onFile }: UploadZoneProps) {
+export default function UploadZone({
+  label,
+  hint,
+  file,
+  onFile,
+}: UploadZoneProps) {
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +37,8 @@ export default function UploadZone({ label, hint, file, onFile }: UploadZoneProp
   const loaded = file !== null;
 
   return (
-    <div
+    <button
+      type="button"
       onDragOver={(e) => {
         e.preventDefault();
         setDragging(true);
@@ -40,7 +46,7 @@ export default function UploadZone({ label, hint, file, onFile }: UploadZoneProp
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
-      className={`flex cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-8 transition-colors ${
+      className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed p-8 transition-colors ${
         loaded
           ? "border-success bg-success/10"
           : dragging
@@ -63,6 +69,7 @@ export default function UploadZone({ label, hint, file, onFile }: UploadZoneProp
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -80,6 +87,7 @@ export default function UploadZone({ label, hint, file, onFile }: UploadZoneProp
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -94,6 +102,6 @@ export default function UploadZone({ label, hint, file, onFile }: UploadZoneProp
           </div>
         </>
       )}
-    </div>
+    </button>
   );
 }

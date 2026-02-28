@@ -15,14 +15,14 @@ export function parseHtml(html: string): string[] {
 
   const usernames: string[] = [];
 
-  anchors.forEach((a) => {
+  for (const a of anchors) {
     const href = a.getAttribute("href") ?? "";
     const segments = href.split("/").filter((s) => s.length > 0);
     const username = segments[segments.length - 1];
     if (username) {
       usernames.push(username);
     }
-  });
+  }
 
   return usernames;
 }

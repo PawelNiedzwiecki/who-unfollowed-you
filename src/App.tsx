@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import UploadZone from "./components/UploadZone";
-import StatCard from "./components/StatCard";
 import SearchBar from "./components/SearchBar";
+import StatCard from "./components/StatCard";
+import UploadZone from "./components/UploadZone";
 import UserRow from "./components/UserRow";
 import { parseHtml } from "./utils/parseHtml";
 import { clearData, loadData, saveData } from "./utils/storage";
@@ -88,7 +88,8 @@ function App() {
     return followers.filter((u) => !followingSet.has(u));
   }, [followers, following]);
 
-  const activeList = tab === "not_following_back" ? notFollowingBack : youDontFollow;
+  const activeList =
+    tab === "not_following_back" ? notFollowingBack : youDontFollow;
 
   const filtered = useMemo(() => {
     if (!search.trim()) return activeList;
@@ -144,6 +145,7 @@ function App() {
           </div>
 
           <button
+            type="button"
             disabled={!canAnalyse}
             onClick={handleAnalyse}
             className={`w-full rounded-xl py-3 text-sm font-semibold transition-colors ${
@@ -163,8 +165,8 @@ function App() {
               <li>
                 Go to{" "}
                 <span className="font-mono text-accent">
-                  Settings → Accounts Centre → Your information and permissions →
-                  Download your information
+                  Settings → Accounts Centre → Your information and permissions
+                  → Download your information
                 </span>
               </li>
               <li>
@@ -186,9 +188,7 @@ function App() {
               </li>
               <li>
                 Download the archive and extract{" "}
-                <span className="font-mono text-accent">
-                  followers_1.html
-                </span>{" "}
+                <span className="font-mono text-accent">followers_1.html</span>{" "}
                 and{" "}
                 <span className="font-mono text-accent">following.html</span>
               </li>
@@ -208,6 +208,7 @@ function App() {
           Unfollowers
         </h1>
         <button
+          type="button"
           onClick={handleReset}
           className="cursor-pointer rounded-lg border border-border px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent hover:text-accent"
         >
@@ -234,6 +235,7 @@ function App() {
       {/* Tabs */}
       <div className="animate-fade-in-delay mb-4 flex gap-2">
         <button
+          type="button"
           onClick={() => {
             setTab("not_following_back");
             setSearch("");
@@ -247,6 +249,7 @@ function App() {
           Don&apos;t follow you back ({notFollowingBack.length})
         </button>
         <button
+          type="button"
           onClick={() => {
             setTab("you_dont_follow");
             setSearch("");
@@ -268,12 +271,14 @@ function App() {
         </div>
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={copyAll}
             className="cursor-pointer rounded-lg border border-border px-4 py-2 text-xs font-medium text-text-muted transition-colors hover:border-accent hover:text-accent"
           >
             Copy all
           </button>
           <button
+            type="button"
             onClick={exportTxt}
             className="cursor-pointer rounded-lg border border-border px-4 py-2 text-xs font-medium text-text-muted transition-colors hover:border-accent hover:text-accent"
           >
