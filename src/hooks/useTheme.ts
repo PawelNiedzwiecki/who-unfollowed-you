@@ -5,8 +5,12 @@ type Theme = "light" | "dark";
 const STORAGE_KEY = "theme";
 
 function getInitialTheme(): Theme {
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  if (stored === "light" || stored === "dark") return stored;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    // localStorage may be unavailable in some privacy modes — fall back to matchMedia
+  }
   return window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
@@ -28,7 +32,11 @@ export function useTheme() {
   const toggleTheme = useCallback(() => {
     setThemeState((prev) => {
       const next = prev === "dark" ? "light" : "dark";
-      localStorage.setItem(STORAGE_KEY, next);
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // localStorage may be unavailable — silently ignore
+      }
       return next;
     });
   }, []);
