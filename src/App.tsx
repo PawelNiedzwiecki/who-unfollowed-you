@@ -1,14 +1,19 @@
+import { InstagramLogoIcon } from "@phosphor-icons/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import SearchBar from "./components/SearchBar";
 import StatCard from "./components/StatCard";
+import ThemeToggle from "./components/ThemeToggle";
 import UploadZone from "./components/UploadZone";
 import UserRow from "./components/UserRow";
+import { useTheme } from "./hooks/useTheme";
 import { parseHtml } from "./utils/parseHtml";
+import { parseJson } from "./utils/parseJson";
 import { clearData, loadData, saveData } from "./utils/storage";
 
 type Tab = "not_following_back" | "you_dont_follow";
 
 function App() {
+  const { theme, toggleTheme } = useTheme();
   const [followers, setFollowers] = useState<string[] | null>(null);
   const [following, setFollowing] = useState<string[] | null>(null);
   const [followersFile, setFollowersFile] = useState<File | null>(null);
@@ -31,8 +36,11 @@ function App() {
     (file: File, setter: (usernames: string[]) => void) => {
       const reader = new FileReader();
       reader.onload = () => {
-        const html = reader.result as string;
-        setter(parseHtml(html));
+        const text = reader.result as string;
+        const usernames = file.name.endsWith(".json")
+          ? parseJson(text)
+          : parseHtml(text);
+        setter(usernames);
       };
       reader.readAsText(file);
     },
@@ -121,7 +129,11 @@ function App() {
     return (
       <div className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-4 py-12">
         <div className="animate-fade-in w-full">
-          <h1 className="mb-2 text-center text-3xl font-bold tracking-tight text-text">
+          <div className="mb-6 flex justify-end">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          </div>
+          <h1 className="mb-2 flex flex-col items-center gap-2 text-center text-3xl font-bold tracking-tight text-text">
+            <InstagramLogoIcon className="h-12 w-12" />
             Unfollowers
           </h1>
           <p className="mb-8 text-center text-sm text-text-muted">
@@ -131,13 +143,13 @@ function App() {
 
           <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <UploadZone
-              label="followers_1.html"
+              label="followers_1.html / followers_1.json"
               hint="Your followers list"
               file={followersFile}
               onFile={handleFollowersFile}
             />
             <UploadZone
-              label="following.html"
+              label="following.html / following.json"
               hint="Accounts you follow"
               file={followingFile}
               onFile={handleFollowingFile}
@@ -183,14 +195,17 @@ function App() {
               </li>
               <li>
                 Choose format:{" "}
-                <span className="font-mono text-accent">HTML</span> and click{" "}
+                <span className="font-mono text-accent">HTML</span> or{" "}
+                <span className="font-mono text-accent">JSON</span> and click{" "}
                 <span className="font-mono text-accent">Create file</span>
               </li>
               <li>
                 Download the archive and extract{" "}
                 <span className="font-mono text-accent">followers_1.html</span>{" "}
                 and{" "}
-                <span className="font-mono text-accent">following.html</span>
+                <span className="font-mono text-accent">following.html</span>{" "}
+                (or their <span className="font-mono text-accent">.json</span>{" "}
+                equivalents)
               </li>
             </ol>
           </div>
@@ -207,13 +222,16 @@ function App() {
         <h1 className="text-xl font-bold tracking-tight text-text">
           Unfollowers
         </h1>
-        <button
-          type="button"
-          onClick={handleReset}
-          className="cursor-pointer rounded-lg border border-border px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent hover:text-accent"
-        >
-          Reset
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          <button
+            type="button"
+            onClick={handleReset}
+            className="cursor-pointer rounded-lg border border-border px-4 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-accent hover:text-accent"
+          >
+            Reset
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
